@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -27,6 +27,30 @@ async function run() {
             const cursor = bookCollection.find(query);
             const books = await cursor.toArray();
             res.send(books);
+        });
+
+        app.get('/books/update/:id',async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const update = await bookCollection.findOne(query);
+            res.send(update);
+        })
+
+        //Post
+
+        app.post('/books', async (req, res) => {
+
+            const newSupplier = req.body;
+            const result = await bookCollection.insertOne(newSupplier);
+            res.send(result);
+        })
+
+        //delete
+        app.delete('/books/update/:id',async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await bookCollection.deleteOne(query);
+            res.send(result);
         })
 
 
