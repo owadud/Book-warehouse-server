@@ -25,7 +25,8 @@ async function run() {
         app.get('/books', async(req, res) => {
             const query = {};
             const cursor = bookCollection.find(query);
-            const books = await cursor.toArray();
+            const books = await cursor.limit(2).toArray();
+           
             res.send(books);
         });
 
